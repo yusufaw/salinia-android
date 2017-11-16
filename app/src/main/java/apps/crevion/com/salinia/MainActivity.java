@@ -1,9 +1,9 @@
 package apps.crevion.com.salinia;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestServerAuthCode(getResources().getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
 
@@ -72,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // Signed in successfully, show authenticated UI.
             updateUI(account);
+
+            String authCode = account.getServerAuthCode();
+            Log.d(TAG, "handleSignInResult: " + authCode);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -107,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 revokeAccess();
                 break;
         }
-
     }
 
     private void signOut() {

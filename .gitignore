@@ -49,5 +49,5 @@ freeline_project_description.json
 
 .DS_Store
 
-
+app/src/main/res/values/strings_local.xml
 
