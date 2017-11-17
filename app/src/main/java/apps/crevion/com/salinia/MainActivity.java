@@ -12,10 +12,25 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     TextView textView;
     SignInButton signInButton;
+
+    OkHttpClient okHttpClient = new OkHttpClient();
+    public static final MediaType JSON
+            = MediaType.parse("application/json; charset=utf-8");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestServerAuthCode(getResources().getString(R.string.server_client_id))
+                .requestScopes(new Scope(Scopes.PROFILE))
                 .requestEmail()
                 .build();
 
@@ -76,11 +96,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             String authCode = account.getServerAuthCode();
             Log.d(TAG, "handleSignInResult: " + authCode);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("auth_code", authCode);
+            post("http://192.168.10.161:3000/users/login", jsonObject.toString(), new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d(TAG, "onFailure: " + e.toString());
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Log.d(TAG, "onResponse: " + response.body().string());
+                }
+            });
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.toString());
             updateUI(null);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -131,5 +166,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         updateUI(null);
                     }
                 });
+    }
+
+    Call post(String url, String json, Callback callback) {
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(callback);
+        return call;
     }
 }
