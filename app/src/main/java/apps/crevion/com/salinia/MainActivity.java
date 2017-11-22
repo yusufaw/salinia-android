@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     TextView textView;
     SignInButton signInButton;
+    Button buttonGoToLog;
 
     OkHttpClient okHttpClient = new OkHttpClient();
     public static final MediaType JSON
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
+        buttonGoToLog = findViewById(R.id.go_to_log);
+        buttonGoToLog.setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
 
@@ -144,6 +148,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.disconnect_button:
                 revokeAccess();
+                break;
+            case R.id.go_to_log:
+                startActivity(new Intent(this, LogActivity.class));
                 break;
         }
     }
