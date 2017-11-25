@@ -35,7 +35,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textViewLog.setText(logList.get(position).text);
+        holder.textViewLog.setText(logList.get(position).getText());
     }
 
     @Override
