@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "handleSignInResult: " + authCode);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("auth_code", authCode);
-            post("http://192.168.10.161:3000/users/login", jsonObject.toString(), new Callback() {
+            post("http://192.168.1.32:3000/users/login", jsonObject.toString(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Log.d(TAG, "onFailure: " + e.toString());

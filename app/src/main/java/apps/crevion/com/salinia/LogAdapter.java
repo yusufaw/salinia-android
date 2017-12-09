@@ -1,7 +1,6 @@
 package apps.crevion.com.salinia;
 
 import android.content.Context;
-import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textViewLog.setText(logList.get(position).getText());
+        holder.textViewLog.setText(logList.get(position).getContent());
     }
 
     @Override
