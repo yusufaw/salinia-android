@@ -1,5 +1,6 @@
 package apps.crevion.com.salinia
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -25,8 +26,7 @@ class LogActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            startActivity(Intent(this, AddLogActivity::class.java))
         }
 
         recyclerLog = findViewById(R.id.recycler_log)
