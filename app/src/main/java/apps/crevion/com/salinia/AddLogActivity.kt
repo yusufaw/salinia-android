@@ -23,7 +23,7 @@ class AddLogActivity : AppCompatActivity() {
         var jsonObject = JSONObject()
         jsonObject.put("content", editTextLog.text)
         textViewSave.setOnClickListener {
-            post("http://192.168.1.24:3000/logs", jsonObject.toString(), object : Callback {
+            post("https://salinia-api.herokuapp.com/logs", jsonObject.toString(), object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     android.util.Log.d("xxx", "onFailure: " + e.toString())
                 }

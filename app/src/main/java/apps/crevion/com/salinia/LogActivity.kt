@@ -24,14 +24,12 @@ class LogActivity : AppCompatActivity() {
         setContentView(R.layout.activity_log)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            startActivity(Intent(this, AddLogActivity::class.java))
-        }
+        fab.setOnClickListener { startActivity(Intent(this, AddLogActivity::class.java)) }
 
         recyclerLog = findViewById(R.id.recycler_log)
         val logList: ArrayList<Log> = ArrayList()
 
-        get("http://192.168.1.32:3000/logs?page=1&limit=10", object : Callback {
+        get("https://salinia-api.herokuapp.com/logs?page=1&limit=10", object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 android.util.Log.d(TAG, "onFailure: " + e.toString())
             }
