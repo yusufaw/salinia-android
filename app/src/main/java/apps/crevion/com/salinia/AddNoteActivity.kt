@@ -1,5 +1,7 @@
 package apps.crevion.com.salinia
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.EditText
@@ -29,8 +31,9 @@ class AddNoteActivity : AppCompatActivity() {
                         override fun onFailure(call: retrofit2.Call<JsonObject>?, t: Throwable?) {
                             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                         }
-
                     })
         }
+
+        editTextNote.append((getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).primaryClip.getItemAt(0).text)
     }
 }
