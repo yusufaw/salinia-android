@@ -15,14 +15,14 @@ import java.util.List;
 
 public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
 
-    private List<Log> logList;
+    private List<Note> noteList;
 
-    public LogAdapter(List<Log> logList) {
-        this.logList = logList;
+    public LogAdapter(List<Note> noteList) {
+        this.noteList = noteList;
     }
 
-    public List<Log> getData() {
-        return logList;
+    public List<Note> getData() {
+        return noteList;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textViewLog.setText(logList.get(position).getContent());
+        holder.textViewLog.setText(noteList.get(position).getContent());
     }
 
     @Override
     public int getItemCount() {
-        return logList.size();
+        return noteList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.EditText
 import android.widget.TextView
-import apps.crevion.com.salinia.MainActivity.JSON
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_add_log.*
-import okhttp3.*
 import org.json.JSONObject
-import java.io.IOException
 
 class AddLogActivity : AppCompatActivity() {
 
-    internal var okHttpClient = OkHttpClient()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_log)
@@ -23,28 +20,17 @@ class AddLogActivity : AppCompatActivity() {
         var jsonObject = JSONObject()
         jsonObject.put("content", editTextLog.text)
         textViewSave.setOnClickListener {
-            post("https://salinia-api.herokuapp.com/logs", jsonObject.toString(), object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    android.util.Log.d("xxx", "onFailure: " + e.toString())
-                }
+            RetrofitService.Creator.getInstance().addNote(editTextLog.text.toString())
+                    .enqueue(object : retrofit2.Callback<JsonObject> {
+                        override fun onResponse(call: retrofit2.Call<JsonObject>?, response: retrofit2.Response<JsonObject>?) {
+                            finish()
+                        }
 
-                @Throws(IOException::class)
-                override fun onResponse(call: Call, response: Response) {
-                    finish()
-                }
-            })
+                        override fun onFailure(call: retrofit2.Call<JsonObject>?, t: Throwable?) {
+                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
+
+                    })
         }
     }
-
-    internal fun post(url: String, json: String, callback: Callback): Call {
-        val body = RequestBody.create(JSON, json)
-        val request = Request.Builder()
-                .url(url)
-                .post(body)
-                .build()
-        val call = okHttpClient.newCall(request)
-        call.enqueue(callback)
-        return call
-    }
-
 }

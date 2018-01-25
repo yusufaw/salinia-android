@@ -6,18 +6,13 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_log.*
-import okhttp3.*
-import org.json.JSONObject
-import java.io.IOException
+import java.util.*
 
 class LogActivity : AppCompatActivity() {
 
-
-    internal var okHttpClient = OkHttpClient()
     var recyclerLog: RecyclerView?= null
-
-    private val TAG = LogActivity::class.java.name
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,38 +22,20 @@ class LogActivity : AppCompatActivity() {
         fab.setOnClickListener { startActivity(Intent(this, AddLogActivity::class.java)) }
 
         recyclerLog = findViewById(R.id.recycler_log)
-        val logList: ArrayList<Log> = ArrayList()
 
-        get("https://salinia-api.herokuapp.com/logs?page=1&limit=10", object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                android.util.Log.d(TAG, "onFailure: " + e.toString())
+        RetrofitService.Creator.getInstance().listLogs().enqueue(object : retrofit2.Callback<JsonObject> {
+            override fun onResponse(call: retrofit2.Call<JsonObject>, response: retrofit2.Response<JsonObject>) {
+                val logList:List<Note> = Arrays.asList(*Gson().fromJson(response.body()!!.getAsJsonArray("data").toString(), Array<Note>::class.java))
+                this@LogActivity.runOnUiThread({ updateAdapter(logList) })
             }
 
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: Response) {
-                val jsonObject1 = JSONObject(response.body()!!.string());
-                val jsonArray = jsonObject1.getJSONArray("data")
-                for (i in 0 until jsonArray.length()) {
-                    val stringResponse = jsonArray.getJSONObject(i).toString();
-                    logList.add(Gson().fromJson(stringResponse, Log::class.java))
-                }
-                this@LogActivity.runOnUiThread({ updateAdapter(logList) })
+            override fun onFailure(call: retrofit2.Call<JsonObject>, t: Throwable) {
             }
         })
     }
 
-    internal fun get(url: String, callback: Callback): Call {
-        val request = Request.Builder()
-                .url(url)
-                .get()
-                .build()
-        val call = okHttpClient.newCall(request)
-        call.enqueue(callback)
-        return call
-    }
-
-    fun updateAdapter(logList: ArrayList<Log>) {
-        var adapter = LogAdapter(logList)
+    fun updateAdapter(noteList: List<Note>) {
+        var adapter = LogAdapter(noteList)
         recyclerLog?.layoutManager = LinearLayoutManager(this)
         recyclerLog?.adapter = adapter
     }
