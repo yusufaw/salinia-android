@@ -18,11 +18,18 @@ class NoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
         setSupportActionBar(toolbar)
-
         fab.setOnClickListener { startActivity(Intent(this, AddNoteActivity::class.java)) }
-
         recyclerNote = findViewById(R.id.recycler_note)
+    }
 
+    fun updateAdapter(noteList: List<Note>) {
+        var adapter = NoteAdapter(noteList)
+        recyclerNote?.layoutManager = LinearLayoutManager(this)
+        recyclerNote?.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
         RetrofitService.Creator.getInstance().listLogs().enqueue(object : retrofit2.Callback<JsonObject> {
             override fun onResponse(call: retrofit2.Call<JsonObject>, response: retrofit2.Response<JsonObject>) {
                 val logList:List<Note> = Arrays.asList(*Gson().fromJson(response.body()!!.getAsJsonArray("data").toString(), Array<Note>::class.java))
@@ -32,11 +39,5 @@ class NoteActivity : AppCompatActivity() {
             override fun onFailure(call: retrofit2.Call<JsonObject>, t: Throwable) {
             }
         })
-    }
-
-    fun updateAdapter(noteList: List<Note>) {
-        var adapter = NoteAdapter(noteList)
-        recyclerNote?.layoutManager = LinearLayoutManager(this)
-        recyclerNote?.adapter = adapter
     }
 }
