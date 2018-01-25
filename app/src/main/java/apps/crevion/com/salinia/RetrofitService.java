@@ -21,6 +21,10 @@ public interface RetrofitService {
     @POST("logs")
     Call<JsonObject> addNote(@Field("content") String content);
 
+    @FormUrlEncoded
+    @POST("users/login")
+    Call<JsonObject> userLogin(@Field("auth_code") String authCode);
+
     class Creator {
         private static RetrofitService INSTANCE;
 
