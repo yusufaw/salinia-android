@@ -5,22 +5,22 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.EditText
 import android.widget.TextView
 import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.activity_add_log.*
+import kotlinx.android.synthetic.main.activity_add_note.*
 import org.json.JSONObject
 
-class AddLogActivity : AppCompatActivity() {
+class AddNoteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_log)
+        setContentView(R.layout.activity_add_note)
         setSupportActionBar(toolbar)
 
         val textViewSave: TextView = findViewById(R.id.text_view_save)
-        val editTextLog: EditText = findViewById(R.id.edit_text_log)
+        val editTextNote: EditText = findViewById(R.id.edit_text_note)
         var jsonObject = JSONObject()
-        jsonObject.put("content", editTextLog.text)
+        jsonObject.put("content", editTextNote.text)
         textViewSave.setOnClickListener {
-            RetrofitService.Creator.getInstance().addNote(editTextLog.text.toString())
+            RetrofitService.Creator.getInstance().addNote(editTextNote.text.toString())
                     .enqueue(object : retrofit2.Callback<JsonObject> {
                         override fun onResponse(call: retrofit2.Call<JsonObject>?, response: retrofit2.Response<JsonObject>?) {
                             finish()

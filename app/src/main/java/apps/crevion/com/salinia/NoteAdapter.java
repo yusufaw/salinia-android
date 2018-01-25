@@ -13,11 +13,11 @@ import java.util.List;
  * Created by yusufaw on 11/20/17.
  */
 
-public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     private List<Note> noteList;
 
-    public LogAdapter(List<Note> noteList) {
+    public NoteAdapter(List<Note> noteList) {
         this.noteList = noteList;
     }
 
@@ -27,14 +27,14 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_log, parent, false);
-        LogAdapter.ViewHolder viewHolder = new LogAdapter.ViewHolder(v, parent.getContext());
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note, parent, false);
+        NoteAdapter.ViewHolder viewHolder = new NoteAdapter.ViewHolder(v, parent.getContext());
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textViewLog.setText(noteList.get(position).getContent());
+        holder.textViewNote.setText(noteList.get(position).getContent());
     }
 
     @Override
@@ -43,13 +43,13 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewLog;
+        public TextView textViewNote;
         public Context context;
 
         public ViewHolder(View itemView, Context context) {
             super(itemView);
 
-            textViewLog = itemView.findViewById(R.id.text_log);
+            textViewNote = itemView.findViewById(R.id.text_note);
             this.context = context;
         }
     }

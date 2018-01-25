@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 revokeAccess();
                 break;
             case R.id.go_to_log:
-                startActivity(new Intent(this, LogActivity.class));
+                startActivity(new Intent(this, NoteActivity.class));
                 break;
         }
     }

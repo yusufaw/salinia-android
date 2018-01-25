@@ -12,7 +12,7 @@
         android:textSize="12sp"
         android:text="6 am, 16 May 2017"/>
     <TextView
-        android:id="@+id/text_log"
+        android:id="@+id/text_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"

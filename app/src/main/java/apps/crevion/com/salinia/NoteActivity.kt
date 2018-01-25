@@ -7,26 +7,26 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.activity_log.*
+import kotlinx.android.synthetic.main.activity_note.*
 import java.util.*
 
-class LogActivity : AppCompatActivity() {
+class NoteActivity : AppCompatActivity() {
 
-    var recyclerLog: RecyclerView?= null
+    var recyclerNote: RecyclerView?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_log)
+        setContentView(R.layout.activity_note)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { startActivity(Intent(this, AddLogActivity::class.java)) }
+        fab.setOnClickListener { startActivity(Intent(this, AddNoteActivity::class.java)) }
 
-        recyclerLog = findViewById(R.id.recycler_log)
+        recyclerNote = findViewById(R.id.recycler_note)
 
         RetrofitService.Creator.getInstance().listLogs().enqueue(object : retrofit2.Callback<JsonObject> {
             override fun onResponse(call: retrofit2.Call<JsonObject>, response: retrofit2.Response<JsonObject>) {
                 val logList:List<Note> = Arrays.asList(*Gson().fromJson(response.body()!!.getAsJsonArray("data").toString(), Array<Note>::class.java))
-                this@LogActivity.runOnUiThread({ updateAdapter(logList) })
+                this@NoteActivity.runOnUiThread({ updateAdapter(logList) })
             }
 
             override fun onFailure(call: retrofit2.Call<JsonObject>, t: Throwable) {
@@ -35,8 +35,8 @@ class LogActivity : AppCompatActivity() {
     }
 
     fun updateAdapter(noteList: List<Note>) {
-        var adapter = LogAdapter(noteList)
-        recyclerLog?.layoutManager = LinearLayoutManager(this)
-        recyclerLog?.adapter = adapter
+        var adapter = NoteAdapter(noteList)
+        recyclerNote?.layoutManager = LinearLayoutManager(this)
+        recyclerNote?.adapter = adapter
     }
 }
