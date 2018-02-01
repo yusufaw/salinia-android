@@ -6,7 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.google.gson.Gson
-import com.google.gson.JsonObject
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_note.*
 import java.util.*
 
@@ -30,14 +31,10 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        RetrofitService.Creator.getInstance().listLogs().enqueue(object : retrofit2.Callback<JsonObject> {
-            override fun onResponse(call: retrofit2.Call<JsonObject>, response: retrofit2.Response<JsonObject>) {
-                val logList:List<Note> = Arrays.asList(*Gson().fromJson(response.body()!!.getAsJsonArray("data").toString(), Array<Note>::class.java))
-                this@NoteActivity.runOnUiThread({ updateAdapter(logList) })
-            }
-
-            override fun onFailure(call: retrofit2.Call<JsonObject>, t: Throwable) {
-            }
-        })
+        RetrofitService.Creator.getInstance()
+                .listLogs()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ updateAdapter(Arrays.asList(*Gson().fromJson(it.getAsJsonArray("data").toString(), Array<Note>::class.java))) })
     }
 }
