@@ -20,7 +20,7 @@ public interface RetrofitService {
 
     @FormUrlEncoded
     @POST("logs")
-    Call<JsonObject> addNote(@Field("content") String content);
+    Observable<JsonObject> addNote(@Field("content") String content);
 
     @FormUrlEncoded
     @POST("users/login")

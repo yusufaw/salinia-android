@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.Toast
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_note.*
 import java.util.*
@@ -35,6 +37,20 @@ class NoteActivity : AppCompatActivity() {
                 .listLogs()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ updateAdapter(Arrays.asList(*Gson().fromJson(it.getAsJsonArray("data").toString(), Array<Note>::class.java))) })
+                .map { Arrays.asList(*Gson().fromJson(it.getAsJsonArray("data").toString(), Array<Note>::class.java)) }
+                .subscribeWith(object: DisposableObserver<List<Note>>() {
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onNext(t: List<Note>) {
+                        updateAdapter(t)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG).show()
+                    }
+
+                })
     }
 }
