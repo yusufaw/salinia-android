@@ -6,13 +6,26 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import apps.crevion.com.salinia.R
+import apps.crevion.com.salinia.model.Note
+import apps.crevion.com.salinia.networking.RetrofitService
+import apps.crevion.com.salinia.ui.note.NoteAdapter
+import com.google.gson.Gson
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
+import java.util.*
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    var recyclerNote: RecyclerView?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +43,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+        recyclerNote = findViewById(R.id.recycler_note)
     }
 
     override fun onBackPressed() {
@@ -81,5 +95,34 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun updateAdapter(noteList: List<Note>) {
+        var adapter = NoteAdapter(noteList)
+        recyclerNote?.layoutManager = LinearLayoutManager(this)
+        recyclerNote?.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        RetrofitService.Creator.getInstance()
+                .listLogs()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { Arrays.asList(*Gson().fromJson(it.getAsJsonArray("data").toString(), Array<Note>::class.java)) }
+                .subscribeWith(object: DisposableObserver<List<Note>>() {
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onNext(t: List<Note>) {
+                        updateAdapter(t)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG).show()
+                    }
+
+                })
     }
 }

@@ -25,13 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import apps.crevion.com.salinia.networking.RetrofitService;
+import apps.crevion.com.salinia.ui.home.HomeActivity;
 import apps.crevion.com.salinia.ui.note.NoteActivity;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,10 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView textView;
     SignInButton signInButton;
     Button buttonGoToLog;
-
-    OkHttpClient okHttpClient = new OkHttpClient();
-    public static final MediaType JSON
-            = MediaType.parse("application/json; charset=utf-8");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             updateUI(account);
 
             String authCode = account.getServerAuthCode();
-            Log.d(TAG, "handleSignInResult: " + authCode);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("auth_code", authCode);
 
@@ -137,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -152,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 revokeAccess();
                 break;
             case R.id.go_to_log:
-                startActivity(new Intent(this, NoteActivity.class));
+                startActivity(new Intent(this, HomeActivity.class));
                 break;
         }
     }
@@ -175,16 +164,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         updateUI(null);
                     }
                 });
-    }
-
-    Call post(String url, String json, Callback callback) {
-        RequestBody body = RequestBody.create(JSON, json);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(callback);
-        return call;
     }
 }
