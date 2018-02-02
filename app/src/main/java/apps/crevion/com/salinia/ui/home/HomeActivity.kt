@@ -1,5 +1,6 @@
 package apps.crevion.com.salinia.ui.home
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -8,11 +9,14 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import apps.crevion.com.salinia.MainApp
 import apps.crevion.com.salinia.R
 import apps.crevion.com.salinia.model.Note
+import apps.crevion.com.salinia.model.User
 import apps.crevion.com.salinia.networking.RetrofitService
 import apps.crevion.com.salinia.ui.note.NoteAdapter
 import com.google.gson.Gson
@@ -22,10 +26,14 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 import java.util.*
+import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    var recyclerNote: RecyclerView?= null
+    private var recyclerNote: RecyclerView?= null
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +52,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
         recyclerNote = findViewById(R.id.recycler_note)
+
+        (application as MainApp).applicationComponent.inject(this)
+        val user: User = Gson().fromJson(sharedPreferences.getString("loggedInUser", ""), User::class.java)
+        Log.d("xxx", "user : " + user.email)
     }
 
     override fun onBackPressed() {
