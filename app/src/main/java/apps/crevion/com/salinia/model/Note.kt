@@ -1,4 +1,4 @@
-package apps.crevion.com.salinia
+package apps.crevion.com.salinia.model
 
 /**
  * Created by yusufaw on 11/24/17.

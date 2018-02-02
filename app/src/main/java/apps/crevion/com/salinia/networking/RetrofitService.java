@@ -1,4 +1,4 @@
-package apps.crevion.com.salinia;
+package apps.crevion.com.salinia.networking;
 
 import com.google.gson.JsonObject;
 

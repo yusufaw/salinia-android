@@ -1,4 +1,4 @@
-package apps.crevion.com.salinia
+package apps.crevion.com.salinia.ui.note
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Toast
+import apps.crevion.com.salinia.*
+import apps.crevion.com.salinia.model.Note
+import apps.crevion.com.salinia.networking.RetrofitService
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver

@@ -24,6 +24,8 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import apps.crevion.com.salinia.networking.RetrofitService;
+import apps.crevion.com.salinia.ui.note.NoteActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;

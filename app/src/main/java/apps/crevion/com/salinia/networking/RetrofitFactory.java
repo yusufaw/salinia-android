@@ -1,4 +1,4 @@
-package apps.crevion.com.salinia;
+package apps.crevion.com.salinia.networking;
 
 import java.util.concurrent.TimeUnit;
 

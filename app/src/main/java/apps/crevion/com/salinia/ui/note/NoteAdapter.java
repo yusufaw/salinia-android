@@ -1,4 +1,4 @@
-package apps.crevion.com.salinia;
+package apps.crevion.com.salinia.ui.note;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+
+import apps.crevion.com.salinia.model.Note;
+import apps.crevion.com.salinia.R;
 
 /**
  * Created by yusufaw on 11/20/17.

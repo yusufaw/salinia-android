@@ -1,4 +1,4 @@
-package apps.crevion.com.salinia
+package apps.crevion.com.salinia.ui.note
 
 import android.content.ClipboardManager
 import android.content.Context
@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.EditText
 import android.widget.TextView
+import apps.crevion.com.salinia.model.Note
+import apps.crevion.com.salinia.R
+import apps.crevion.com.salinia.networking.RetrofitService
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver

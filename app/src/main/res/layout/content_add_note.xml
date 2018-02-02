@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="apps.crevion.com.salinia.AddNoteActivity"
+    tools:context="apps.crevion.com.salinia.ui.note.AddNoteActivity"
     tools:showIn="@layout/activity_add_note">
 
     <android.support.design.widget.TextInputLayout
