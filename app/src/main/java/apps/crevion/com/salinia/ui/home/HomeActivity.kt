@@ -1,6 +1,5 @@
 package apps.crevion.com.salinia.ui.home
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -19,6 +18,7 @@ import apps.crevion.com.salinia.MainApp
 import apps.crevion.com.salinia.R
 import apps.crevion.com.salinia.model.Note
 import apps.crevion.com.salinia.model.User
+import apps.crevion.com.salinia.module.PreferencesUtil
 import apps.crevion.com.salinia.networking.RetrofitService
 import apps.crevion.com.salinia.ui.note.NoteAdapter
 import com.bumptech.glide.Glide
@@ -37,7 +37,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var recyclerNote: RecyclerView?= null
 
     @Inject
-    lateinit var sharedPreferences: SharedPreferences
+    lateinit var preferencesUtil: PreferencesUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +58,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         recyclerNote = findViewById(R.id.recycler_note)
 
         (application as MainApp).applicationComponent.inject(this)
-        val user: User = Gson().fromJson(sharedPreferences.getString("loggedInUser", ""), User::class.java)
+        val user: User = preferencesUtil.getUserLogin()
 
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val headerView: View = navigationView.getHeaderView(0)

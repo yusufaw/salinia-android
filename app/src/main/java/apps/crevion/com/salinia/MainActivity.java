@@ -1,7 +1,6 @@
 package apps.crevion.com.salinia;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -29,9 +27,9 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 
 import apps.crevion.com.salinia.model.User;
+import apps.crevion.com.salinia.module.PreferencesUtil;
 import apps.crevion.com.salinia.networking.RetrofitService;
 import apps.crevion.com.salinia.ui.home.HomeActivity;
-import apps.crevion.com.salinia.ui.note.NoteActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button buttonGoToLog;
 
     @Inject
-    SharedPreferences sharedPreferences;
+    PreferencesUtil preferencesUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         updateUI(account);
         User user = new User("1", "Yusuf", "Aji Wibowo", "ucupper@gmail.com", "https://avatars2.githubusercontent.com/u/3977416?s=460&v=4");
-        sharedPreferences.edit().putString("loggedInUser", new Gson().toJson(user)).apply();
+        preferencesUtil.putUserLogin(user);
     }
 
     @Override
