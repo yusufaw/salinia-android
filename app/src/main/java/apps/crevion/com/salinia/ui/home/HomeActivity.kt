@@ -2,16 +2,18 @@ package apps.crevion.com.salinia.ui.home
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import apps.crevion.com.salinia.MainApp
 import apps.crevion.com.salinia.R
@@ -19,6 +21,8 @@ import apps.crevion.com.salinia.model.Note
 import apps.crevion.com.salinia.model.User
 import apps.crevion.com.salinia.networking.RetrofitService
 import apps.crevion.com.salinia.ui.note.NoteAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
@@ -55,7 +59,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         (application as MainApp).applicationComponent.inject(this)
         val user: User = Gson().fromJson(sharedPreferences.getString("loggedInUser", ""), User::class.java)
-        Log.d("xxx", "user : " + user.email)
+
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
+        val headerView: View = navigationView.getHeaderView(0)
+
+        val userNameTextView: TextView = headerView.findViewById(R.id.user_name)
+        val userEmailTextView = headerView.findViewById<TextView>(R.id.user_email)
+        val userPhotoImageView = headerView.findViewById<ImageView>(R.id.user_photo)
+
+        userNameTextView.text = user.firstName + " " + user.lastName
+        userEmailTextView.text = user.email
+        Glide.with(this).load(user.photoProfile).apply(RequestOptions.circleCropTransform()).into(userPhotoImageView)
     }
 
     override fun onBackPressed() {
