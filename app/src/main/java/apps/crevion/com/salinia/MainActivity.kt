@@ -134,7 +134,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             RetrofitService.Creator.getInstance().userLogin(authCode)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .map { Gson().fromJson(it.getAsJsonObject("data").toString(), User::class.java) }
+                    .map {
+                        preferencesUtil.putUserToken(it.getAsJsonObject("data").get("token").asString)
+                         Gson().fromJson(it.getAsJsonObject("data").toString(), User::class.java) }
                     .subscribeWith(object: DisposableObserver<User>() {
                         override fun onComplete() {
 

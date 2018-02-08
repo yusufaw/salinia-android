@@ -3,10 +3,10 @@ package apps.crevion.com.salinia.networking;
 import com.google.gson.JsonObject;
 
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**
@@ -15,11 +15,11 @@ import retrofit2.http.POST;
 
 public interface RetrofitService {
 
-    @GET("logs")
-    Observable<JsonObject> listLogs();
+    @GET("notes")
+    Observable<JsonObject> listLogs(@Header("Authorization") String token);
 
     @FormUrlEncoded
-    @POST("logs")
+    @POST("notes")
     Observable<JsonObject> addNote(@Field("content") String content);
 
     @FormUrlEncoded
