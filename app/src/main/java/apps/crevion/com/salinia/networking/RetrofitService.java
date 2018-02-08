@@ -24,7 +24,7 @@ public interface RetrofitService {
 
     @FormUrlEncoded
     @POST("users/login")
-    Call<JsonObject> userLogin(@Field("auth_code") String authCode);
+    Observable<JsonObject> userLogin(@Field("auth_code") String authCode);
 
     class Creator {
         private static RetrofitService INSTANCE;
