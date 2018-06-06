@@ -14,8 +14,9 @@ class PreferencesUtil @Inject constructor(private val sharedPreferences: SharedP
         return sharedPreferences.edit().putString("loggedInUser", Gson().toJson(user)).commit()
     }
 
-    fun getUserLogin(): User {
-        return Gson().fromJson(sharedPreferences.getString("loggedInUser", ""), User::class.java)
+    fun getUserLogin(): User? {
+        val stringUser = sharedPreferences.getString("loggedInUser", "")
+        return if(stringUser.isEmpty()) null else Gson().fromJson(stringUser, User::class.java)
     }
 
     fun putUserToken(token: String): Boolean {

@@ -58,7 +58,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         recyclerNote = findViewById(R.id.recycler_note)
 
         (application as MainApp).applicationComponent.inject(this)
-        val user: User = preferencesUtil.getUserLogin()
+        val user: User? = preferencesUtil.getUserLogin()
 
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val headerView: View = navigationView.getHeaderView(0)
@@ -67,9 +67,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val userEmailTextView = headerView.findViewById<TextView>(R.id.user_email)
         val userPhotoImageView = headerView.findViewById<ImageView>(R.id.user_photo)
 
-        userNameTextView.text = user.firstName + " " + user.lastName
-        userEmailTextView.text = user.email
-        Glide.with(this).load(user.photoProfile).apply(RequestOptions.circleCropTransform()).into(userPhotoImageView)
+        userNameTextView.text = user?.firstName + " " + user?.lastName
+        userEmailTextView.text = user?.email
+        Glide.with(this).load(user?.photoProfile).apply(RequestOptions.circleCropTransform()).into(userPhotoImageView)
     }
 
     override fun onBackPressed() {
